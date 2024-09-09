@@ -1,4 +1,4 @@
-package com.project.roomBookingSystem.controller;
+package com.project.roomBookingSystem.controller.admin;
 
 
 

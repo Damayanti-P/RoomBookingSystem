@@ -42,7 +42,7 @@ public class JwtUtils {
         return Keys.hmacShaKeyFor(keyBytes);
 	}
 	
-	private String extractUsername(String token)
+	public String extractUsername(String token)
 	{
 		return extractClaim(token,Claims::getSubject);
 	}
@@ -53,7 +53,8 @@ public class JwtUtils {
 	@SuppressWarnings({ "deprecation"})
 	private Claims extractAllClaims(String token) {
 		
-		return Jwts.parser().setSigningKey(getSignature()).parseClaimsJwt(token).getBody();
+		return Jwts.parserBuilder().setSigningKey(getSignature()).build().
+                parseClaimsJws(token).getBody();
 	}
 	private boolean isTokenExpired(String token) {
 		return extractExpirationTime(token).before(new Date());

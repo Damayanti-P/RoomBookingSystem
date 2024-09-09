@@ -9,6 +9,7 @@ import com.project.roomBookingSystem.entity.User;
 import com.project.roomBookingSystem.enums.UserRole;
 import com.project.roomBookingSystem.repository.UserRepo;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityExistsException;
 import lombok.AllArgsConstructor;
 
@@ -17,16 +18,17 @@ import lombok.AllArgsConstructor;
 public class AuthServiceImpl implements AuthService{
 	
 	private final UserRepo userRepo;
-		
+	
+	@PostConstruct
 	public void createAdminAccount(){
 		User admin=userRepo.findByRole(UserRole.ADMIN);
 		if(admin== null){
 			User user=new User();
-			user.setEmail("Admin@booking.com");
+			user.setEmail("admin@booking.com");
 			user.setName("Admin");
 			user.setPassword(new BCryptPasswordEncoder().encode("admin"));
 			user.setRole(UserRole.ADMIN);
-			 userRepo.save(user);
+			userRepo.save(user);
 		}else {
 			System.out.println("Admin Already Exists");
 		}

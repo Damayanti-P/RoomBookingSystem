@@ -29,6 +29,19 @@
 	<properties>
 		<java.version>17</java.version>
 	</properties>
+	<dependencyManagement>
+	  <dependencies>
+	    <dependency>
+	      <groupId>com.amazonaws</groupId>
+	      <artifactId>aws-java-sdk-bom</artifactId>
+	      <version>1.11.1000</version>
+	      <type>pom</type>
+	      <scope>import</scope>
+	    </dependency>
+	  </dependencies>
+	</dependencyManagement>
+	
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -79,6 +92,16 @@
 			<artifactId>jjwt-jackson</artifactId>
 			<version>0.11.5</version>
 		</dependency>
+		<dependency>
+	        <groupId>org.apache.commons</groupId>
+	        <artifactId>commons-lang3</artifactId>
+	        <version>3.12.0</version>
+    	</dependency>
+    	
+    	<dependency>
+		    <groupId>com.amazonaws</groupId>
+		    <artifactId>aws-java-sdk-s3</artifactId>
+		 </dependency>
 	</dependencies>
 
 	<build>

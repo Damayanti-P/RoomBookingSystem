@@ -9,17 +9,23 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.project.roomBookingSystem.dto.ReservationDto;
 import com.project.roomBookingSystem.dto.ReservationResponseDto;
 import com.project.roomBookingSystem.entity.Reservation;
+import com.project.roomBookingSystem.entity.Rooms;
+import com.project.roomBookingSystem.enums.ReservationStatus;
 import com.project.roomBookingSystem.repository.ReservationRepo;
+import com.project.roomBookingSystem.repository.RoomRepo;
 
 @Service
 @RequiredArgsConstructor
 public class ReservationServiceImpl implements ReservationService{
 
 	private final ReservationRepo reservationRepository ;
+	
+	private final RoomRepo roomRepository ;
 	
     @Override
     public ReservationResponseDto getAllReservations(int pageNumber) {
@@ -40,6 +46,26 @@ public class ReservationServiceImpl implements ReservationService{
         responseDto.setReservationDtoList(reservationDtoList);
         return  responseDto;
 
+    }
+
+	@Override
+	 public boolean updateReservationStatus(int id, String status) {
+
+        Optional<Reservation> optionalReservation = reservationRepository.findById(id);
+        if(optionalReservation.isPresent()) {
+            Reservation reservation = optionalReservation.get();
+            if("APPROVED".equals(status)) {
+                reservation.setReservationStatus(ReservationStatus.APPROVED);
+                Rooms room = reservation.getRooms();
+                room.setAvailable(false);
+                roomRepository.save(room);
+            } else {
+                reservation.setReservationStatus(ReservationStatus.REJECTED);
+            }
+            reservationRepository.save(reservation);
+            return true;
+        }
+        return false;
     }
 
 }
